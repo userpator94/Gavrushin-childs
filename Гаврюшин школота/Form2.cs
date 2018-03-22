@@ -92,8 +92,8 @@ namespace Гаврюшин_школота
             {
                 forCorrelation[j] = double.Parse(list[j, 2]);
                 forPercent[j] = double.Parse(list[j, 1]);
-            }                
-            double r = wshFunc.Correl(forPercent, forCorrelation);
+            }
+            double r = Math.Round(wshFunc.Correl(forPercent, forCorrelation), 15);
             
             //вывод в первую таблицу
             dataGridDisplay1(1, list, Nx, r);            
@@ -130,7 +130,7 @@ namespace Гаврюшин_школота
                 //сумма квадратов разниц
                 sumOfDifference += Math.Pow(((double.Parse(list[j, P])) - sum / N), 2);
             }
-            double stDeviation = Math.Sqrt(sumOfDifference / N); //N-1
+            double stDeviation = Math.Sqrt(sumOfDifference / (N-1)); //N-1
             if (P == 1)
                 stDevH = stDeviation;
             if (P == 2)
@@ -179,7 +179,7 @@ namespace Гаврюшин_школота
                 forOutput[i] = i + MinH;
 
             averageH = Math.Round(averageH);
-            averageM = Math.Round(averageM);
+            //averageM = Math.Round(averageM);
             stDevH = Math.Round(stDevH);
 
             string s = null;
