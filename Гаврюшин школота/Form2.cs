@@ -33,13 +33,12 @@ namespace Гаврюшин_школота
                     MessageBoxOptions.DefaultDesktopOnly);
                 return;
             }
-            dataGridView1.Rows.Clear();
-            dataGridView2.Rows.Clear();
-
             int page = 0;
             if (comboBox1.SelectedIndex == 0) page += 20; //мужской пол с 12 страницы
             if (comboBox2.SelectedIndex < 8) page += 2;
             else page += Convert.ToInt32(comboBox2.SelectedItem.ToString()) + 2;
+            dataGridView1.Rows.Clear();
+            dataGridView2.Rows.Clear();
 
             Microsoft.Office.Interop.Excel.Application excApp =
                 new Microsoft.Office.Interop.Excel.Application();
@@ -47,6 +46,7 @@ namespace Гаврюшин_школота
             Workbook wb;
             Worksheet wsh;
             string exeDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            exeDir += @"\базы\";
             exeDir = System.IO.Path.Combine(exeDir, "base.xls");
             wb = excApp.Workbooks.Open(exeDir, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
@@ -64,6 +64,7 @@ namespace Гаврюшин_школота
                     list[i, j] = wsh.Cells[i+ 1, j + 1].Text.ToString();//считываем текст в строку
 
             int Nx = list.GetLength(0);
+            //проверка задваивания
             if (list[list.GetLength(0)-1, 1] == list[list.GetLength(0) - 2, 1] &&
                 list[list.GetLength(0)-1, 2] == list[list.GetLength(0) - 2, 2])
                 Nx = list.GetLength(0) - 1;

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using System.Text.RegularExpressions;
 
 namespace Гаврюшин_школота
 {
@@ -20,6 +21,7 @@ namespace Гаврюшин_школота
         {
             InitializeComponent();
             RegisterWriterNChecker();
+            RegionSelector(@"\базы\");
         }
 
         public static void RegisterWriterNChecker()
@@ -66,6 +68,11 @@ namespace Гаврюшин_школота
             if (comboBox1.SelectedIndex == -1)
             {
                 MessageBox.Show("Выберите пол");
+                return;
+            }
+            if (regionSelect.SelectedIndex == -1)
+            {
+                MessageBox.Show("Выберите регион");
                 return;
             }
 
@@ -128,20 +135,23 @@ namespace Гаврюшин_школота
                     excelTable[i, j] = double.Parse(strokiParts[i, j + 1]);
             }
 
+            //получаем регион
+            string name = regionSelect.SelectedItem.ToString();
+
             CountOfAgesMessage(age);
-            writeToExcel(excelTable, excelTable.GetLength(0), excelTable.GetLength(1), age);                        
+            writeToExcel(excelTable, excelTable.GetLength(0), excelTable.GetLength(1), age, name);                        
         }
 
-        private void writeToExcel(double[,] arrayExc, int k, int m, int[] age)
+        private void writeToExcel(double[,] arrayExc, int k, int m, int[] age, string name)
         {            
             Microsoft.Office.Interop.Excel.Application ObjWorkExcel = 
                 new Microsoft.Office.Interop.Excel.Application(); //открыть эксель
             ObjWorkExcel.Visible = false;            
 
             string exeDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            
+            exeDir += @"\базы\";
             Microsoft.Office.Interop.Excel.Workbook ObjWorkBook = 
-                ObjWorkExcel.Workbooks.Open(System.IO.Path.Combine(exeDir, "base.xls"), 
+                ObjWorkExcel.Workbooks.Open(System.IO.Path.Combine(exeDir, name), 
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, 
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, 
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing); //открыть файл
@@ -154,10 +164,10 @@ namespace Гаврюшин_школота
                 if (comboBox1.SelectedItem.ToString() == "мужской") age[q] = age[q] + 20;
                 if (age[q] > 40 || age[q] > 20 && comboBox1.SelectedItem.ToString() == "женский")
                 {
-                    age[q] = age[q] - 20;                    
+                    age[q] = age[q] - 20;
                     ObjWorkSheet = (Worksheet)ObjWorkBook.Sheets[age[q]];
                 }
-                else                  
+                else
                     ObjWorkSheet = (Worksheet)ObjWorkBook.Sheets[age[q] + 2]; //получить нужный лист              
                 var lastCell = ObjWorkSheet.Cells.SpecialCells(XlCellType.xlCellTypeLastCell);//1 ячейку              
 
@@ -165,7 +175,7 @@ namespace Гаврюшин_школота
                 if (lastCell.Row == 1) R = 1;
                 else R = lastCell.Row + 1;
 
-                double[] outputExc = new double[3] ;
+                double[] outputExc = new double[3];
                 for (int i = 0; i < 3; i++)
                     outputExc[i] = arrayExc[q, i];
 
@@ -249,6 +259,60 @@ namespace Гаврюшин_школота
             }                
             //MessageBox.Show(s);
             MessageBox.Show(s, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void RegionSelector(string s)
+        {
+            regionSelect.Items.Clear();
+            string exeDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string path = exeDir + s;
+            string[] file_list = System.IO.Directory.GetFiles(path, "*.xls");
+            string regions = null;
+            regionSelect.Items.Add("такого региона нет");
+            for (int i = 0; i < file_list.Length; i++)
+            {
+                //regions = Regex.Replace(file_list[i], exeDir, String.Empty);
+                regions = file_list[i].Substring(file_list[i].LastIndexOf("\\"));
+                regionSelect.Items.Add(regions);
+            }                
+
+            int maxWidth = 0, temp = 0;
+            foreach (var obj in regionSelect.Items)
+            {
+                temp = TextRenderer.MeasureText(obj.ToString(), regionSelect.Font).Width;
+                if (temp > maxWidth)
+                {
+                    maxWidth = temp;
+                }
+            }
+            regionSelect.DropDownWidth = maxWidth;
+        }
+
+        private void regionSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (regionSelect.SelectedIndex == 0)
+            {
+                label6.Visible = true;
+                textBox2.Visible = true;
+                addRegion.Visible = true;
+            }
+            else
+            {
+                label6.Visible = false;
+                textBox2.Visible = false;
+                addRegion.Visible = false;
+            }
+        }
+
+        private void addRegion_Click(object sender, EventArgs e)
+        {
+            string exeDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\базы\";
+            System.IO.File.CreateText(exeDir + textBox2.Text + ".xls");
+            MessageBox.Show("Регион добавлен");
+            label6.Visible = false;
+            textBox2.Visible = false;
+            addRegion.Visible = false;
+            RegionSelector(@"\базы\");
         }
     }
 }
