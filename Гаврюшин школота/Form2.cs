@@ -37,8 +37,9 @@ namespace Гаврюшин_школота
             dataGridView2.Rows.Clear();
 
             int page = 0;
-            if (comboBox1.SelectedIndex == 0) page += 11; //мужской пол с 12 страницы
-            page += Convert.ToInt32(comboBox2.SelectedItem.ToString()) - 6;
+            if (comboBox1.SelectedIndex == 0) page += 20; //мужской пол с 12 страницы
+            if (comboBox2.SelectedIndex < 8) page += 2;
+            else page += Convert.ToInt32(comboBox2.SelectedItem.ToString()) + 2;
 
             Microsoft.Office.Interop.Excel.Application excApp =
                 new Microsoft.Office.Interop.Excel.Application();

@@ -77,6 +77,14 @@
             // 
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
+            "3",
+            "3,5",
+            "4",
+            "4,5",
+            "5",
+            "5,5",
+            "6",
+            "6,5",
             "7",
             "8",
             "9",
