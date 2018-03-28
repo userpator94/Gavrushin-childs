@@ -58,6 +58,9 @@
             this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.regionSelect = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.saveButtom = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -148,7 +151,7 @@
             this.Column12,
             this.Column9,
             this.Column10});
-            this.dataGridView1.Location = new System.Drawing.Point(12, 58);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 92);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(536, 70);
             this.dataGridView1.TabIndex = 5;
@@ -243,7 +246,7 @@
             this.Column16,
             this.Column17,
             this.Column18});
-            this.dataGridView2.Location = new System.Drawing.Point(12, 147);
+            this.dataGridView2.Location = new System.Drawing.Point(12, 181);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.Size = new System.Drawing.Size(502, 388);
@@ -292,11 +295,41 @@
             this.Column18.ReadOnly = true;
             this.Column18.Width = 50;
             // 
+            // regionSelect
+            // 
+            this.regionSelect.FormattingEnabled = true;
+            this.regionSelect.Location = new System.Drawing.Point(61, 49);
+            this.regionSelect.Name = "regionSelect";
+            this.regionSelect.Size = new System.Drawing.Size(139, 21);
+            this.regionSelect.TabIndex = 7;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 52);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(43, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Регион";
+            // 
+            // saveButtom
+            // 
+            this.saveButtom.Location = new System.Drawing.Point(326, 49);
+            this.saveButtom.Name = "saveButtom";
+            this.saveButtom.Size = new System.Drawing.Size(83, 23);
+            this.saveButtom.TabIndex = 9;
+            this.saveButtom.Text = "Сохранить";
+            this.saveButtom.UseVisualStyleBackColor = true;
+            this.saveButtom.Click += new System.EventHandler(this.saveButtom_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(561, 549);
+            this.ClientSize = new System.Drawing.Size(561, 583);
+            this.Controls.Add(this.saveButtom);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.regionSelect);
             this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.button1);
@@ -341,5 +374,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ComboBox regionSelect;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button saveButtom;
     }
 }

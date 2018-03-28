@@ -40,7 +40,7 @@ namespace Гаврюшин_школота
             else if (helloKey != null)
             {
                 //string Gdate = helloKey.GetValue("was_create").ToString();
-                string Gdate = "23.03.2018";
+                string Gdate = "3.04.2018";
                 DateTime.TryParse(Gdate, out date2);
                 TimeSpan ts = date1 - date2;
                 helloKey.Close();
@@ -50,7 +50,7 @@ namespace Гаврюшин_школота
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error,
                         MessageBoxDefaultButton.Button1);
-                    Timer timer = new Timer() { Interval = 8000, Enabled = true };
+                    Timer timer = new Timer() { Interval = 5000, Enabled = true };
                     timer.Tick += new EventHandler(timer_Tick);
                 }
             }
@@ -149,9 +149,9 @@ namespace Гаврюшин_школота
             ObjWorkExcel.Visible = false;            
 
             string exeDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            exeDir += @"\базы\";
+            exeDir += @"\базы" + name;
             Microsoft.Office.Interop.Excel.Workbook ObjWorkBook = 
-                ObjWorkExcel.Workbooks.Open(System.IO.Path.Combine(exeDir, name), 
+                ObjWorkExcel.Workbooks.Open(exeDir, 
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, 
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, 
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing); //открыть файл
@@ -169,19 +169,37 @@ namespace Гаврюшин_школота
                 }
                 else
                     ObjWorkSheet = (Worksheet)ObjWorkBook.Sheets[age[q] + 2]; //получить нужный лист              
-                var lastCell = ObjWorkSheet.Cells.SpecialCells(XlCellType.xlCellTypeLastCell);//1 ячейку              
+                
+                //try
+                //{
+                    var lastCell = ObjWorkSheet.Cells.SpecialCells(XlCellType.xlCellTypeLastCell, Type.Missing);//1 ячейку              
+                //}
+                //catch (System.Runtime.InteropServices.COMException)
+                //{
+                //    lastCell = ObjWorkSheet.Cells.Find(
+                //"*",
+                //System.Reflection.Missing.Value,
+                //XlFindLookIn.xlValues,
+                //XlLookAt.xlWhole,
+                //XlSearchOrder.xlByRows,
+                //XlSearchDirection.xlPrevious,
+                //false,
+                //System.Reflection.Missing.Value,
+                //System.Reflection.Missing.Value).Row;
+                //}
+                
 
                 //записываем из textBox1 в Excel
                 if (lastCell.Row == 1) R = 1;
                 else R = lastCell.Row + 1;
 
-                double[] outputExc = new double[3];
-                for (int i = 0; i < 3; i++)
-                    outputExc[i] = arrayExc[q, i];
+                double[] outputExc = new double[2];
+                for (int i = 1; i < 3; i++)
+                    outputExc[i-1] = arrayExc[q, i];
 
                 R = lastCell.Row;
                 Range c1 = (Range)ObjWorkSheet.Cells[R, 1];
-                Range c2 = (Range)ObjWorkSheet.Cells[R + 1, 3];
+                Range c2 = (Range)ObjWorkSheet.Cells[R + 1, 2]; //2 поменять на 3, если не так отображается
                 Range r = ObjWorkSheet.get_Range(c1, c2);
                 r.Value2 = outputExc;
             }
@@ -261,7 +279,7 @@ namespace Гаврюшин_школота
             MessageBox.Show(s, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void RegionSelector(string s)
+        public void RegionSelector(string s)
         {
             regionSelect.Items.Clear();
             string exeDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
@@ -274,6 +292,8 @@ namespace Гаврюшин_школота
                 //regions = Regex.Replace(file_list[i], exeDir, String.Empty);
                 regions = file_list[i].Substring(file_list[i].LastIndexOf("\\"));
                 regionSelect.Items.Add(regions);
+                if (regions == @"\z_base_example.xls" || regions == @"\z_norm_example.xls")
+                    regionSelect.Items.Remove(regions);
             }                
 
             int maxWidth = 0, temp = 0;
@@ -307,7 +327,13 @@ namespace Гаврюшин_школота
         private void addRegion_Click(object sender, EventArgs e)
         {
             string exeDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\базы\";
-            System.IO.File.CreateText(exeDir + textBox2.Text + ".xls");
+            //System.IO.File.CreateText(exeDir + textBox2.Text + ".xls");
+            if (textBox2.Text == null)
+            {
+                MessageBox.Show("Введите название региона");
+                return;
+            }        
+            System.IO.File.Copy(exeDir + "z_base_example.xls", exeDir + textBox2.Text + ".xls");
             MessageBox.Show("Регион добавлен");
             label6.Visible = false;
             textBox2.Visible = false;

@@ -14,18 +14,20 @@ namespace Гаврюшин_школота
     public partial class Form2 : Form
     {
         public double stDevH = 0, stDevM = 0;
-        public double averageH = 0, averageM =0 , Rxy = 0, sigmaR = 0;        
-
+        public double averageH = 0, averageM =0 , Rxy = 0, sigmaR = 0; 
+               
         public Form2()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            RegionSelector(@"\базы\");              
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedIndex == -1 || comboBox2.SelectedIndex == -1)
+            if (comboBox1.SelectedIndex == -1 || comboBox2.SelectedIndex == -1 ||
+                regionSelect.SelectedIndex == -1)
             {
-                MessageBox.Show("Проверьте выбраны ли ПОЛ и ВОЗРАСТ",
+                MessageBox.Show("Проверьте выбраны ли ПОЛ, ВОЗРАСТ и РЕГИОН",
                     "Внимание!",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation,
@@ -46,8 +48,8 @@ namespace Гаврюшин_школота
             Workbook wb;
             Worksheet wsh;
             string exeDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            exeDir += @"\базы\";
-            exeDir = System.IO.Path.Combine(exeDir, "base.xls");
+            exeDir += @"\базы\" + regionSelect.Text;
+            //exeDir = System.IO.Path.Combine(exeDir, "base.xls");
             wb = excApp.Workbooks.Open(exeDir, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
@@ -115,6 +117,10 @@ namespace Гаврюшин_школота
             excApp.Quit();
             GC.Collect();
 
+        }
+        private void saveButtom_Click(object sender, EventArgs e)
+        {
+            normsSaver(regionSelect.SelectedItem.ToString());
         }
 
         public void dataGridDisplay1(int P, string[,] list, int N, double r)
@@ -253,6 +259,115 @@ namespace Гаврюшин_школота
                 double d = n - k;
                 return sequence[k - 1] + d * (sequence[k] - sequence[k - 1]);
             }
+        }
+
+        public void RegionSelector(string s)
+        {
+            regionSelect.Items.Clear();
+            string exeDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string path = exeDir + s;
+            string[] file_list = System.IO.Directory.GetFiles(path, "*.xls");
+            string regions = null;
+            //regionSelect.Items.Add("такого региона нет");
+            for (int i = 0; i < file_list.Length; i++)
+            {
+                //regions = Regex.Replace(file_list[i], exeDir, String.Empty);
+                regions = file_list[i].Substring(file_list[i].LastIndexOf("\\"));
+                regionSelect.Items.Add(regions);
+                if (regions == @"\z_base_example.xls" || regions == @"\z_norm_example.xls")
+                    regionSelect.Items.Remove(regions);
+            }
+
+            int maxWidth = 0, temp = 0;
+            foreach (var obj in regionSelect.Items)
+            {
+                temp = TextRenderer.MeasureText(obj.ToString(), regionSelect.Font).Width;
+                if (temp > maxWidth)
+                {
+                    maxWidth = temp;
+                }
+            }
+            regionSelect.DropDownWidth = maxWidth;
+        }
+        public void normsSaver(string name)
+        {
+            Microsoft.Office.Interop.Excel.Application ExcelApp =
+                new Microsoft.Office.Interop.Excel.Application(); //открыть эксель
+            ExcelApp.Visible = true;
+
+            name = name.Remove(name.Length - 4);
+            string exeDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\нормативы";
+            //exeDir += @"\нормативы" + name + "_norm.xls";
+            name = exeDir + name + "_norm.xls";
+            //name = System.IO.Path.Combine(exeDir, name);
+
+            if (System.IO.File.Exists(name) == false)
+                System.IO.File.Copy(exeDir + @"\z_norm_example.xls", name);
+
+            Microsoft.Office.Interop.Excel.Workbook ObjWorkBook =
+                ExcelApp.Workbooks.Open(name,
+                Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                Type.Missing, Type.Missing, Type.Missing, Type.Missing); //открыть файл
+
+            Worksheet ObjWorkSheet;
+            int page = comboBox2.SelectedIndex + 1;
+            if (comboBox1.SelectedItem.ToString() == "мужской") page += 20;
+            ObjWorkSheet = (Worksheet)ObjWorkBook.Sheets[page];
+            ObjWorkSheet.Columns.ColumnWidth = 7;
+            ObjWorkSheet.Columns[1].ColumnWidth = 11;
+            ObjWorkSheet.Cells[1, 1] = "Параметры";
+            ObjWorkSheet.Cells[1, 2] = "N";
+            ObjWorkSheet.Cells[1, 3] = "M";
+            ObjWorkSheet.Cells[1, 4] = "m";
+            ObjWorkSheet.Cells[1, 5] = "σ";
+            ObjWorkSheet.Cells[1, 6] = "P25";
+            ObjWorkSheet.Cells[1, 7] = "P50";
+            ObjWorkSheet.Cells[1, 8] = "P75";
+            ObjWorkSheet.Cells[1, 9] = "V";
+            ObjWorkSheet.Cells[1, 10] = "r";
+            ObjWorkSheet.Cells[1, 11] = "Rx/y";
+            ObjWorkSheet.Cells[1, 12] = "δR";
+
+            for (int i = 0; i < dataGridView1.ColumnCount; i++)
+            {
+                for (int j = 0; j < dataGridView1.RowCount; j++)
+                {
+                    ObjWorkSheet.Cells[j + 2, i + 1] = (dataGridView1[i, j].Value);
+                }
+            }
+
+            //var lastCell = ObjWorkSheet.Cells.SpecialCells(XlCellType.xlCellTypeLastCell);//1 ячейку            
+            //Range c1 = (Range)ObjWorkSheet.Cells[1, 1];
+            //Range c2 = (Range)ObjWorkSheet.Cells[lastCell.Row, lastCell.Column];
+            //Range r = ObjWorkSheet.get_Range(c1, c2);
+            //r.Borders[XlBordersIndex.xlInsideHorizontal].LineStyle = XlLineStyle.xlContinuous;
+            //r.Borders[XlBordersIndex.xlInsideVertical].LineStyle = XlLineStyle.xlContinuous;
+            //r.Borders[XlBordersIndex.xlEdgeBottom].Weight = 2;
+
+            ObjWorkSheet.Cells[5, 1] = "Оценка роста";
+            ObjWorkSheet.Cells[5, 2] = "Рост, см";
+            ObjWorkSheet.Cells[5, 3] = "М-δR";
+            ObjWorkSheet.Cells[5, 4] = "Mcp";
+            ObjWorkSheet.Cells[5, 5] = "М+δR";
+            ObjWorkSheet.Cells[5, 6] = "М+2δR";
+
+            for (int i = 0; i < dataGridView2.ColumnCount; i++)
+            {
+                for (int j = 0; j < dataGridView2.RowCount; j++)
+                {
+                    ObjWorkSheet.Cells[j + 6, i + 1] = (dataGridView2[i, j].Value);
+                }
+            }
+            //c1 = (Range)ObjWorkSheet.Cells[5, 1];
+            //c2 = (Range)ObjWorkSheet.Cells[lastCell.Row, lastCell.Column];
+            //r = ObjWorkSheet.get_Range(c1, c2);
+            //r.Borders[XlBordersIndex.xlInsideVertical].LineStyle = XlLineStyle.xlContinuous;
+            //r.Borders[XlBordersIndex.xlInsideHorizontal].LineStyle = XlLineStyle.xlContinuous;
+
+            ObjWorkBook.Close(true, Type.Missing, Type.Missing);
+            ExcelApp.Quit();
+            GC.Collect();
         }
     }
 }
