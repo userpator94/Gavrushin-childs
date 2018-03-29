@@ -54,21 +54,21 @@ namespace Гаврюшин_школота
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             wsh = (Worksheet)wb.Sheets[page];
-            var lastCell = wsh.Cells.SpecialCells(XlCellType.xlCellTypeLastCell);
+            var lastCell = wsh.Cells.SpecialCells(XlCellType.xlCellTypeLastCell, Type.Missing);
             if (lastCell.Row < 3)
             {
                 MessageBox.Show("Данных в это категории недостаточно, чтобы построить нормативы");
                 return;
             }
-            string[,] list = new string[lastCell.Row, 3]; // массив значений с листа равен по размеру листу
+            string[,] list = new string[lastCell.Row, 2]; // массив значений с листа равен по размеру листу
             for (int i = 0; i < lastCell.Row; i++) //по всем колонкам
-                for (int j = 0; j < 3; j++) // по всем строкам кроме последней
+                for (int j = 0; j < 2; j++) // по всем строкам кроме последней
                     list[i, j] = wsh.Cells[i+ 1, j + 1].Text.ToString();//считываем текст в строку
 
             int Nx = list.GetLength(0);
             //проверка задваивания
-            if (list[list.GetLength(0)-1, 1] == list[list.GetLength(0) - 2, 1] &&
-                list[list.GetLength(0)-1, 2] == list[list.GetLength(0) - 2, 2])
+            if (list[list.GetLength(0)-1, 0] == list[list.GetLength(0) - 2, 0] &&
+                list[list.GetLength(0)-1, 1] == list[list.GetLength(0) - 2, 1])
                 Nx = list.GetLength(0) - 1;
 
             if (Nx < 100 && Nx > 2) MessageBox.Show(
@@ -94,14 +94,14 @@ namespace Гаврюшин_школота
             double[] forPercent = new double[Nx];
             for (int j = 0; j < Nx; j++)
             {
-                forCorrelation[j] = double.Parse(list[j, 2]);
-                forPercent[j] = double.Parse(list[j, 1]);
+                forCorrelation[j] = double.Parse(list[j, 1]);
+                forPercent[j] = double.Parse(list[j, 0]);
             }
             double r = Math.Round(wshFunc.Correl(forPercent, forCorrelation), 15);
             
             //вывод в первую таблицу
-            dataGridDisplay1(1, list, Nx, r);            
-            dataGridDisplay1(2, list, Nx, r);
+            dataGridDisplay1(0, list, Nx, r);            
+            dataGridDisplay1(1, list, Nx, r);
 
             //вывод во вторую таблицу
             dataGridDisplay2(Nx, list, Rxy);
@@ -139,9 +139,9 @@ namespace Гаврюшин_школота
                 sumOfDifference += Math.Pow(((double.Parse(list[j, P])) - sum / N), 2);
             }
             double stDeviation = Math.Sqrt(sumOfDifference / (N-1)); //N-1
-            if (P == 1)
+            if (P == 0)
                 stDevH = stDeviation;
-            if (P == 2)
+            if (P == 1)
             {
                 stDevM = stDeviation;
                 Rxy = r * stDevM / stDevH;                
@@ -149,8 +149,8 @@ namespace Гаврюшин_школота
             }
 
             double average = sum / N;
-            if (P == 1) averageH = average;
-            if (P == 2) averageM = average;            
+            if (P == 0) averageH = average;
+            if (P == 1) averageM = average;            
             double mediana = stDeviation / Math.Sqrt(N);            
             double percent25 = Math.Round(Percentile(forPercent, 0.25), 1); //25%
             double percent50 = Math.Round(Percentile(forPercent, 0.5), 1); //50%
@@ -161,13 +161,13 @@ namespace Гаврюшин_школота
             average = Math.Round((average), 1);
             mediana = Math.Round((mediana), 1);
             V = Math.Round(V, 1);
+            if (P == 0)
+                this.dataGridView1.Rows.Add
+                ("Рост", N, average, mediana, stDeviation, percent25, percent50,
+                percent75, V, "-", "-", "-");
             if (P == 1)
                 this.dataGridView1.Rows.Add
-                ("Рост", list.GetLength(0), average, mediana, stDeviation, percent25, percent50,
-                percent75, V, "-", "-", "-");
-            if (P == 2)
-                this.dataGridView1.Rows.Add
-                ("Масса", list.GetLength(0), average, mediana, stDeviation, percent25, percent50,
+                ("Масса", N, average, mediana, stDeviation, percent25, percent50,
                 percent75, V, Math.Round(r, 1), Math.Round(Rxy, 1), Math.Round(sigmaR, 1));
         }
 
@@ -176,7 +176,7 @@ namespace Гаврюшин_школота
             //int Max = list
             double[] forHeight = new double[N];
             for (int i = 0; i < N; i++)
-                forHeight[i] = Math.Round(double.Parse(list[i, 1]));
+                forHeight[i] = Math.Round(double.Parse(list[i, 0]));
 
             double MaxHdouble = forHeight.Max();
             int MaxH = Convert.ToInt32(MaxHdouble);
