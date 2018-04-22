@@ -1,7 +1,6 @@
 C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\bin\Debug\Гаврюшин школота.exe.config
 C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\bin\Debug\Гаврюшин школота.exe
 C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\bin\Debug\Гаврюшин школота.pdb
-C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Debug\Гаврюшин школота.csprojResolveAssemblyReference.cache
 C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Debug\Гаврюшин_школота.Form1.resources
 C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Debug\Гаврюшин_школота.Properties.Resources.resources
 C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Debug\Гаврюшин школота.csproj.GenerateResource.Cache
@@ -9,3 +8,4 @@ C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин шко�
 C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Debug\Гаврюшин школота.pdb
 C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Debug\Гаврюшин_школота.Form2.resources
 C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Debug\Гаврюшин школота.csproj.ResolveComReference.cache
+C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Debug\Гаврюшин школота.csprojResolveAssemblyReference.cache

@@ -1,0 +1,10 @@
+C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\bin\Release\Гаврюшин школота.exe.config
+C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Release\Гаврюшин школота.csproj.ResolveComReference.cache
+C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\bin\Release\Гаврюшин школота.exe
+C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\bin\Release\Гаврюшин школота.pdb
+C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Release\Гаврюшин_школота.Form1.resources
+C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Release\Гаврюшин_школота.Form2.resources
+C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Release\Гаврюшин_школота.Properties.Resources.resources
+C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Release\Гаврюшин школота.csproj.GenerateResource.Cache
+C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Release\Гаврюшин школота.exe
+C:\Users\Илья\Documents\Visual Studio 2015\Projects\Гаврюшин школота\Гаврюшин школота\obj\Release\Гаврюшин школота.pdb
