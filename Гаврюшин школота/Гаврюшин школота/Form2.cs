@@ -133,6 +133,7 @@ namespace Гаврюшин_школота
                 return;
             }
             normsSaver(regionSelect.SelectedItem.ToString());
+            saveButtom.Enabled = false;
         }
 
         public void dataGridDisplay1(int P, string[,] list, int N, double r)
@@ -346,7 +347,7 @@ namespace Гаврюшин_школота
             if (comboBox1.SelectedItem.ToString() == "мужской") page += 20;
             ObjWorkSheet = (Worksheet)ObjWorkBook.Sheets[page];
             ObjWorkSheet.Columns.ColumnWidth = 7;
-            ObjWorkSheet.Columns[1].ColumnWidth = 11;
+            ObjWorkSheet.Columns[1].ColumnWidth = 14;
             ObjWorkSheet.Cells[1, 1] = "Параметры";
             ObjWorkSheet.Cells[1, 2] = "N";
             ObjWorkSheet.Cells[1, 3] = "M";
@@ -381,7 +382,7 @@ namespace Гаврюшин_школота
             ObjWorkSheet.Cells[5, 3] = "М-δR";
             ObjWorkSheet.Cells[5, 4] = "Mcp";
             ObjWorkSheet.Cells[5, 5] = "М+δR";
-            ObjWorkSheet.Cells[5, 6] = "М+2δR";
+            ObjWorkSheet.Cells[5, 6] = "М+1.5δR";
 
             for (int i = 0; i < dataGridView2.ColumnCount; i++)
             {

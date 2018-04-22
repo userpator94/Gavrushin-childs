@@ -213,18 +213,35 @@ namespace Гаврюшин_школота
         {
             if (regionSelect.Items.Count == 0)
                 MessageBox.Show("Нет ни одной базы, по которой могли бы быть построены нормативы");
-            Form normativs = new Form2();
-            //Form f1 = new Form1();
-            //normativs.StartPosition = f1.StartPosition;
-            normativs.StartPosition = FormStartPosition.CenterParent;
-            normativs.Location = this.Location;
-            normativs.Show(this);
-            if (normativs.StartPosition == FormStartPosition.CenterParent)
+
+            if (checkBox1.Checked)
             {
-                var x = Location.X + (Width - normativs.Width) / 2;
-                var y = Location.Y + (Height - normativs.Height) / 2;
-                normativs.Location = new System.Drawing.Point(Math.Max(x, 0), Math.Max(y, 0));
+                Form normativs = new Form2();
+                normativs.StartPosition = FormStartPosition.CenterParent;
+                normativs.Location = this.Location;
+                normativs.Show(this);
+                if (normativs.StartPosition == FormStartPosition.CenterParent)
+                {
+                    var x = Location.X + (Width - normativs.Width) / 2;
+                    var y = Location.Y + (Height - normativs.Height) / 2;
+                    normativs.Location = new System.Drawing.Point(Math.Max(x, 0), Math.Max(y, 0));
+                }
             }
+            if (checkBox2.Checked)
+            {
+                Form normativsStoch = new Form3();
+                normativsStoch.StartPosition = FormStartPosition.CenterParent;
+                normativsStoch.Location = this.Location;
+                normativsStoch.Show(this);
+                if (normativsStoch.StartPosition == FormStartPosition.CenterParent)
+                {
+                    var x = Location.X + (Width - normativsStoch.Width) / 2;
+                    var y = Location.Y + (Height - normativsStoch.Height) / 2;
+                    normativsStoch.Location = new System.Drawing.Point(Math.Max(x, 0), Math.Max(y, 0));
+                }
+            }
+
+            
         }
 
         private void CountOfAgesMessage(int[] age)
@@ -343,5 +360,16 @@ namespace Гаврюшин_школота
             addRegion.Visible = false;
             RegionSelector(@"\базы\");
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked) checkBox2.Checked = false;
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2.Checked) checkBox1.Checked = false;
+        }
+
     }
 }
