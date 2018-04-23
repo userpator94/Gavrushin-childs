@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.f3dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -50,9 +50,17 @@
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.normMaker = new System.Windows.Forms.Button();
+            this.normsSaver = new System.Windows.Forms.Button();
+            this.dgvOUT = new System.Windows.Forms.DataGridView();
+            this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.f3dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvOUT)).BeginInit();
             this.SuspendLayout();
             // 
             // f3dataGridView1
@@ -75,7 +83,7 @@
             this.Column10});
             this.f3dataGridView1.Location = new System.Drawing.Point(12, 88);
             this.f3dataGridView1.Name = "f3dataGridView1";
-            this.f3dataGridView1.Size = new System.Drawing.Size(537, 70);
+            this.f3dataGridView1.Size = new System.Drawing.Size(534, 67);
             this.f3dataGridView1.TabIndex = 6;
             // 
             // Column11
@@ -86,24 +94,24 @@
             // 
             // Column1
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column1.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column1.DefaultCellStyle = dataGridViewCellStyle1;
             this.Column1.HeaderText = "Nx";
             this.Column1.Name = "Column1";
             this.Column1.Width = 43;
             // 
             // Column2
             // 
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column2.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column2.DefaultCellStyle = dataGridViewCellStyle2;
             this.Column2.HeaderText = "Mx";
             this.Column2.Name = "Column2";
             this.Column2.Width = 42;
             // 
             // Column3
             // 
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column3.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column3.DefaultCellStyle = dataGridViewCellStyle3;
             this.Column3.HeaderText = "mx";
             this.Column3.Name = "Column3";
             this.Column3.Width = 32;
@@ -230,34 +238,101 @@
             this.comboBox1.Size = new System.Drawing.Size(70, 21);
             this.comboBox1.TabIndex = 9;
             // 
-            // button1
+            // normMaker
             // 
-            this.button1.Location = new System.Drawing.Point(350, 11);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(83, 21);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "Построить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.normMaker.Location = new System.Drawing.Point(350, 11);
+            this.normMaker.Name = "normMaker";
+            this.normMaker.Size = new System.Drawing.Size(83, 21);
+            this.normMaker.TabIndex = 15;
+            this.normMaker.Text = "Построить";
+            this.normMaker.UseVisualStyleBackColor = true;
+            this.normMaker.Click += new System.EventHandler(this.normMaker_Click);
             // 
-            // button2
+            // normsSaver
             // 
-            this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(350, 49);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(83, 21);
-            this.button2.TabIndex = 16;
-            this.button2.Text = "Сохранить";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.normsSaver.Enabled = false;
+            this.normsSaver.Location = new System.Drawing.Point(350, 49);
+            this.normsSaver.Name = "normsSaver";
+            this.normsSaver.Size = new System.Drawing.Size(83, 21);
+            this.normsSaver.TabIndex = 16;
+            this.normsSaver.Text = "Сохранить";
+            this.normsSaver.UseVisualStyleBackColor = true;
+            this.normsSaver.Click += new System.EventHandler(this.normsSaver_Click);
+            // 
+            // dgvOUT
+            // 
+            this.dgvOUT.AllowUserToAddRows = false;
+            this.dgvOUT.AllowUserToDeleteRows = false;
+            this.dgvOUT.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvOUT.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column13,
+            this.Column14,
+            this.Column15,
+            this.Column16,
+            this.Column17,
+            this.Column18});
+            this.dgvOUT.Location = new System.Drawing.Point(12, 183);
+            this.dgvOUT.Name = "dgvOUT";
+            this.dgvOUT.ReadOnly = true;
+            this.dgvOUT.Size = new System.Drawing.Size(411, 388);
+            this.dgvOUT.TabIndex = 17;
+            // 
+            // Column13
+            // 
+            this.Column13.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Column13.Frozen = true;
+            this.Column13.HeaderText = "Оценка роста";
+            this.Column13.Name = "Column13";
+            this.Column13.ReadOnly = true;
+            this.Column13.Width = 94;
+            // 
+            // Column14
+            // 
+            this.Column14.Frozen = true;
+            this.Column14.HeaderText = "Длина тела, см";
+            this.Column14.Name = "Column14";
+            this.Column14.ReadOnly = true;
+            this.Column14.Width = 50;
+            // 
+            // Column15
+            // 
+            this.Column15.Frozen = true;
+            this.Column15.HeaderText = "М-δR";
+            this.Column15.Name = "Column15";
+            this.Column15.ReadOnly = true;
+            this.Column15.Width = 50;
+            // 
+            // Column16
+            // 
+            this.Column16.Frozen = true;
+            this.Column16.HeaderText = "Мср.";
+            this.Column16.Name = "Column16";
+            this.Column16.ReadOnly = true;
+            this.Column16.Width = 50;
+            // 
+            // Column17
+            // 
+            this.Column17.Frozen = true;
+            this.Column17.HeaderText = "М+δR";
+            this.Column17.Name = "Column17";
+            this.Column17.ReadOnly = true;
+            this.Column17.Width = 50;
+            // 
+            // Column18
+            // 
+            this.Column18.HeaderText = "М+1.5δR";
+            this.Column18.Name = "Column18";
+            this.Column18.ReadOnly = true;
+            this.Column18.Width = 53;
             // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(561, 583);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.dgvOUT);
+            this.Controls.Add(this.normsSaver);
+            this.Controls.Add(this.normMaker);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.regionSelect);
             this.Controls.Add(this.label2);
@@ -268,6 +343,7 @@
             this.Name = "Form3";
             this.Text = "Нормативы по заданным статистическим параметрам";
             ((System.ComponentModel.ISupportInitialize)(this.f3dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvOUT)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -294,7 +370,14 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button normMaker;
+        private System.Windows.Forms.Button normsSaver;
+        private System.Windows.Forms.DataGridView dgvOUT;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column15;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
     }
 }

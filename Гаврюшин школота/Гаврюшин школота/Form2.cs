@@ -217,7 +217,9 @@ namespace Гаврюшин_школота
                         s = "низкий";
                         low++;
                     }                                        
-                }                    
+                } 
+                
+                ////                   а не нужен ли тут -         
                 if (forOutput[i] < Math.Ceiling(averageH + stDevH) && 
                     forOutput[i] >= Math.Ceiling(averageH - 2 * stDevH))
                 {
@@ -369,14 +371,6 @@ namespace Гаврюшин_школота
                 }
             }
 
-            //var lastCell = ObjWorkSheet.Cells.SpecialCells(XlCellType.xlCellTypeLastCell);//1 ячейку            
-            //Range c1 = (Range)ObjWorkSheet.Cells[1, 1];
-            //Range c2 = (Range)ObjWorkSheet.Cells[lastCell.Row, lastCell.Column];
-            //Range r = ObjWorkSheet.get_Range(c1, c2);
-            //r.Borders[XlBordersIndex.xlInsideHorizontal].LineStyle = XlLineStyle.xlContinuous;
-            //r.Borders[XlBordersIndex.xlInsideVertical].LineStyle = XlLineStyle.xlContinuous;
-            //r.Borders[XlBordersIndex.xlEdgeBottom].Weight = 2;
-
             ObjWorkSheet.Cells[5, 1] = "Оценка роста";
             ObjWorkSheet.Cells[5, 2] = "Рост, см";
             ObjWorkSheet.Cells[5, 3] = "М-δR";
@@ -391,14 +385,10 @@ namespace Гаврюшин_школота
                     ObjWorkSheet.Cells[j + 6, i + 1] = (dataGridView2[i, j].Value);
                 }
             }
-            //c1 = (Range)ObjWorkSheet.Cells[5, 1];
-            //c2 = (Range)ObjWorkSheet.Cells[lastCell.Row, lastCell.Column];
-            //r = ObjWorkSheet.get_Range(c1, c2);
-            //r.Borders[XlBordersIndex.xlInsideVertical].LineStyle = XlLineStyle.xlContinuous;
-            //r.Borders[XlBordersIndex.xlInsideHorizontal].LineStyle = XlLineStyle.xlContinuous;
 
             ObjWorkBook.Save();
             ExcelApp.Visible = true;
+            ObjWorkBook.Save();
             //ObjWorkBook.Close(true, Type.Missing, Type.Missing);
             //ExcelApp.Quit();
             //GC.Collect();
