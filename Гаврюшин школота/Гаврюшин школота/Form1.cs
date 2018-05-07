@@ -17,6 +17,7 @@ namespace Гаврюшин_школота
     public partial class Form1 : Form
     {
         public static System.Timers.Timer aTimer;
+        public int copies = 0;
 
         public Form1()
         {
@@ -100,6 +101,7 @@ namespace Гаврюшин_школота
             TimeSpan datesBetween;
             int[] age = new int[stroki.Length];
             double[,] excelTable = new double[(strokiParts.GetLength(0)), 3];
+            double[,] dniTable = new double[(strokiParts.GetLength(0)), 3];
             for (int i = 0; i < stroki.Length; i++)
             {
                 datesBetween = Convert.ToDateTime(strokiParts[i, 1]) - Convert.ToDateTime(strokiParts[i, 0]);
@@ -127,18 +129,23 @@ namespace Гаврюшин_школота
                 if (datesBetween.Days >= 6392) age[i] = 18;
 
                 excelTable[i, 0] = age[i];
+                dniTable[i, 0] = datesBetween.Days;
             }
 
             //добавляем рост и массу из первого массива
             for (int i = 0; i < stroki.Length; i++)
             {
                 for (int j = 1; j < 3; j++)
+                {
                     excelTable[i, j] = Math.Round(double.Parse(strokiParts[i, j + 1]), 1);
+                    dniTable[i, j] = Math.Round(double.Parse(strokiParts[i, j + 1]), 1);
+                }
+                    
             }
 
             ///////////////////////////
             //here must be antiduplicate method
-            duplicatesInTextBox(excelTable);
+            duplicatesInTextBox(dniTable);
 
             //получаем регион
             string name = regionSelect.SelectedItem.ToString();
@@ -225,12 +232,6 @@ namespace Гаврюшин_школота
             Marshal.ReleaseComObject(ObjWorkExcel);
         }
 
-        //private void duplicatesElimination(double[,] ar1, double[,] ar2)
-        //{
-        //    var uniqueValues = ar1.Cast<long>().Distinct();
-        //    MessageBox.Show(uniqueValues +"");
-        //}
-
         private void duplicatesInTextBox(double[,] primal)
         {
             //for (int i = 0; i < 3; i++) element[i] = primal[0, i];
@@ -242,7 +243,7 @@ namespace Гаврюшин_школота
                     array[j, i] = Convert.ToInt16(primal[j, i] * 10);
                 }
             }
-            //var array = new[,] { { 1, 2 }, { 3, 4 }, { 1, 2 }, { 7, 8 } };
+
             array = array.ToEnumerableOfEnumerable()
                      .Distinct(new ListEqualityComparer<int>())
                      .ToList()
@@ -255,12 +256,14 @@ namespace Гаврюшин_школота
                 for (int i = 0; i < 3; i++)
                 {
                     final[j, i] = Convert.ToDouble(array[j, i]/10.0);
-                    textBox1.Text += final[j, i] + "		";
+                    if (i>0)
+                        textBox1.Text += final[j, i] + "	";
                 }
-                textBox1.Text += Environment.NewLine;
+                if (j!= array.GetLength(0)-1)
+                    textBox1.Text += Environment.NewLine;
             }
-            textBox1.Text += Environment.NewLine + (primal.GetLength(0) - array.GetLength(0));
 
+            copies = primal.GetLength(0) - array.GetLength(0);
             //return final;
         }
 
@@ -301,8 +304,8 @@ namespace Гаврюшин_школота
 
         private void CountOfAgesMessage(int[] age)
         {
-            string s = "Детей всего "+ age.Length + Environment.NewLine +
-                "\r\nпо возрасту:\r\n";
+            string s = "Детей всего "+ age.Length + Environment.NewLine +"дубликатов: " + copies + Environment.NewLine
+                + "\r\nпо возрасту:\r\n";
             double baby_age = 0;
             var h = new Dictionary<int, int>();
             foreach (var i in age)
