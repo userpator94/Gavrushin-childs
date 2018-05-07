@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 
 namespace Гаврюшин_школота
 {
@@ -40,7 +41,7 @@ namespace Гаврюшин_школота
             else if (helloKey != null)
             {
                 //string Gdate = helloKey.GetValue("was_create").ToString();
-                string Gdate = "1.05.2018";
+                string Gdate = "20.05.2018";
                 DateTime.TryParse(Gdate, out date2);
                 TimeSpan ts = date1 - date2;
                 helloKey.Close();
@@ -135,11 +136,16 @@ namespace Гаврюшин_школота
                     excelTable[i, j] = Math.Round(double.Parse(strokiParts[i, j + 1]), 1);
             }
 
+            ///////////////////////////
+            //here must be antiduplicate method
+            duplicatesInTextBox(excelTable);
+
             //получаем регион
             string name = regionSelect.SelectedItem.ToString();
 
             CountOfAgesMessage(age);
-            writeToExcel(excelTable, excelTable.GetLength(0), excelTable.GetLength(1), age, name);                        
+            //writeToExcel(excelTable, excelTable.GetLength(0), excelTable.GetLength(1), age, name);   
+            //writeToExcel(duplicatesInTextBox(excelTable), excelTable.GetLength(0), excelTable.GetLength(1), age, name);                      
         }
 
         private void writeToExcel(double[,] arrayExc, int k, int m, int[] age, string name)
@@ -202,11 +208,60 @@ namespace Гаврюшин_школота
                 Range c2 = (Range)ObjWorkSheet.Cells[R + 1, 2]; //2 поменять на 3, если не так отображается
                 Range r = ObjWorkSheet.get_Range(c1, c2);
                 r.Value2 = outputExc;
+
+                //проверка на дубликаты
+                //System.Array values;
+                //Range xlRange = ObjWorkSheet.UsedRange;
+                //values = (System.Array)xlRange.Cells.Value;
+                //duplicatesElimination(values, outputExc);
+                //MessageBox.Show(Compare(values, outputExc) + "");
             }
+            
 
             ObjWorkBook.Close(true, Type.Missing, Type.Missing); //закрыть с сохранением
             ObjWorkExcel.Quit(); // выйти из экселя
             GC.Collect(); // убрать за собой
+            //GC.WaitForPendingFinalizers();
+            Marshal.ReleaseComObject(ObjWorkExcel);
+        }
+
+        //private void duplicatesElimination(double[,] ar1, double[,] ar2)
+        //{
+        //    var uniqueValues = ar1.Cast<long>().Distinct();
+        //    MessageBox.Show(uniqueValues +"");
+        //}
+
+        private void duplicatesInTextBox(double[,] primal)
+        {
+            //for (int i = 0; i < 3; i++) element[i] = primal[0, i];
+            var array = new int[primal.GetLength(0),3];
+            for (int j = 0; j < primal.GetLength(0); j++)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    array[j, i] = Convert.ToInt16(primal[j, i] * 10);
+                }
+            }
+            //var array = new[,] { { 1, 2 }, { 3, 4 }, { 1, 2 }, { 7, 8 } };
+            array = array.ToEnumerableOfEnumerable()
+                     .Distinct(new ListEqualityComparer<int>())
+                     .ToList()
+                     .ToTwoDimensionalArray();
+
+            double[,] final = new double[array.GetLength(0), 3];
+            textBox1.Text = null;
+            for (int j = 0; j < array.GetLength(0); j++)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    final[j, i] = Convert.ToDouble(array[j, i]/10.0);
+                    textBox1.Text += final[j, i] + "		";
+                }
+                textBox1.Text += Environment.NewLine;
+            }
+            textBox1.Text += Environment.NewLine + (primal.GetLength(0) - array.GetLength(0));
+
+            //return final;
         }
 
         private void ShowNormativsButton_Click(object sender, EventArgs e)
@@ -371,5 +426,60 @@ namespace Гаврюшин_школота
             if (checkBox2.Checked) checkBox1.Checked = false;
         }
 
+    }
+
+    public static class MyExtensions
+    {
+        public static IEnumerable<List<T>> ToEnumerableOfEnumerable<T>(this T[,] array)
+        {
+            int rowCount = array.GetLength(0);
+            int columnCount = array.GetLength(1);
+
+            for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
+            {
+                var row = new List<T>();
+                for (int columnIndex = 0; columnIndex < columnCount; columnIndex++)
+                {
+                    row.Add(array[rowIndex, columnIndex]);
+                }
+                yield return row;
+            }
+        }
+        public static T[,] ToTwoDimensionalArray<T>(this List<List<T>> tuples)
+        {
+            var list = tuples.ToList();
+            T[,] array = null;
+            for (int rowIndex = 0; rowIndex < list.Count; rowIndex++)
+            {
+                var row = list[rowIndex];
+                if (array == null)
+                {
+                    array = new T[list.Count, row.Count];
+                }
+                for (int columnIndex = 0; columnIndex < row.Count; columnIndex++)
+                {
+                    array[rowIndex, columnIndex] = row[columnIndex];
+                }
+            }
+            return array;
+        }
+    }
+
+    public class ListEqualityComparer<T> : IEqualityComparer<List<T>>
+    {
+        public bool Equals(List<T> x, List<T> y)
+        {
+            return x.SequenceEqual(y);
+        }
+
+        public int GetHashCode(List<T> obj)
+        {
+            int hash = 19;
+            foreach (var o in obj)
+            {
+                hash = hash * 31 + o.GetHashCode();
+            }
+            return hash;
+        }
     }
 }
