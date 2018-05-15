@@ -18,12 +18,35 @@ namespace Гаврюшин_школота
     {
         public static System.Timers.Timer aTimer;
         public int copies = 0;
+        Form greet = new greeting();
 
         public Form1()
         {
+            greetingForm();
             InitializeComponent();
+            this.StartPosition = FormStartPosition.Manual;
+            var w = Screen.PrimaryScreen.Bounds.Width;
+            var h = Screen.PrimaryScreen.Bounds.Height;
+            this.Location = new System.Drawing.Point((w - this.Width) / 2, (h - this.Height) / 2);
             RegisterWriterNChecker();
             RegionSelector(@"\базы\");
+        }
+
+        public void greetingForm()
+        {
+            //Form greet = new greeting();
+            greet.StartPosition = FormStartPosition.Manual;
+            //greet.StartPosition = FormStartPosition.CenterParent;
+            //greet.Location = this.Location;
+            //var w = Screen.PrimaryScreen.Bounds.Width;
+            //var h = Screen.PrimaryScreen.Bounds.Height;
+            //greet.Location = new System.Drawing.Point((w - greet.Width) / 2, (h - greet.Height) / 2);
+            greet.Show();
+            //_pause(5000);
+            var t = Task.Run(async delegate { await Task.Delay(TimeSpan.FromSeconds(3)); return 42; });
+            t.Wait();
+            //System.Threading.Thread.Sleep(5000);
+            greet.Close();
         }
 
         public static void RegisterWriterNChecker()
@@ -51,7 +74,7 @@ namespace Гаврюшин_школота
                     MessageBox.Show("Неоплаченный период истёк", "Внимание",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error,
-                        MessageBoxDefaultButton.Button1);
+                        MessageBoxDefaultButton.Button1);                    
                     Timer timer = new Timer() { Interval = 5000, Enabled = true };
                     timer.Tick += new EventHandler(timer_Tick);
                 }
@@ -64,6 +87,15 @@ namespace Гаврюшин_школота
             (sender as Timer).Enabled = false;
             System.Windows.Forms.Application.Exit();
         }
+
+        //private void _pause(int value)
+        //{
+        //    System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        //    sw.Start();
+        //    //string s = null;
+        //    while (sw.ElapsedMilliseconds < value)
+        //        greet.Close();
+        //}
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -139,20 +171,19 @@ namespace Гаврюшин_школота
                 {
                     excelTable[i, j] = Math.Round(double.Parse(strokiParts[i, j + 1]), 1);
                     dniTable[i, j] = Math.Round(double.Parse(strokiParts[i, j + 1]), 1);
-                }
-                    
+                }                    
             }
 
             ///////////////////////////
             //here must be antiduplicate method
-            duplicatesInTextBox(dniTable);
+            //duplicatesInTextBox(dniTable);
 
             //получаем регион
             string name = regionSelect.SelectedItem.ToString();
 
             CountOfAgesMessage(age);
             //writeToExcel(excelTable, excelTable.GetLength(0), excelTable.GetLength(1), age, name);   
-            //writeToExcel(duplicatesInTextBox(excelTable), excelTable.GetLength(0), excelTable.GetLength(1), age, name);                      
+            writeToExcel(duplicatesInTextBox(dniTable), excelTable.GetLength(0), excelTable.GetLength(1), age, name);                      
         }
 
         private void writeToExcel(double[,] arrayExc, int k, int m, int[] age, string name)
@@ -232,7 +263,7 @@ namespace Гаврюшин_школота
             Marshal.ReleaseComObject(ObjWorkExcel);
         }
 
-        private void duplicatesInTextBox(double[,] primal)
+        private double[,] duplicatesInTextBox(double[,] primal)
         {
             //for (int i = 0; i < 3; i++) element[i] = primal[0, i];
             var array = new int[primal.GetLength(0),3];
@@ -264,7 +295,7 @@ namespace Гаврюшин_школота
             }
 
             copies = primal.GetLength(0) - array.GetLength(0);
-            //return final;
+            return final;
         }
 
         private void ShowNormativsButton_Click(object sender, EventArgs e)
