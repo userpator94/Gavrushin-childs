@@ -36,10 +36,10 @@ namespace Гаврюшин_школота
                     MessageBoxOptions.DefaultDesktopOnly);
                 return;
             }
-            int page = 0;
+            int page = 1;
             if (comboBox1.SelectedIndex == 0) page += 20; //мужской пол с 12 страницы
-            if (comboBox2.SelectedIndex < 8) page += 2;
-            else page += Convert.ToInt32(comboBox2.SelectedItem.ToString()) + 2;
+            if (comboBox2.SelectedIndex < 8) page += comboBox2.SelectedIndex;
+            //else page += Convert.ToInt32(comboBox2.SelectedItem.ToString()) + 2;
             dataGridView1.Rows.Clear();
             dataGridView2.Rows.Clear();
 
@@ -56,13 +56,39 @@ namespace Гаврюшин_школота
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             wsh = (Worksheet)wb.Sheets[page];
             var lastCell = wsh.Cells.SpecialCells(XlCellType.xlCellTypeLastCell, Type.Missing);
-            if (lastCell.Row < 3)
+
+            //проверка на дубликаты
+            int R = lastCell.Row;
+            if (R > 25)
             {
+                Range range = wsh.UsedRange;
+                double[,] primaArr = new double[lastCell.Row, lastCell.Column];
+                for (int i = 0; i < R; i++)
+                    for (int j = 0; j < lastCell.Column; j++)
+                        primaArr[i, j] = double.Parse(wsh.Cells[i + 1, j + 1].Text.ToString());
+                var repairedArr = duplicatesInExcelBase(primaArr);
+                int copies = primaArr.GetLength(0) - repairedArr.GetLength(0);
+                if (copies > primaArr.GetLength(0) * 0.1)
+                {
+                    //range.Delete();
+                    range.Value2 = null;
+                    Range c1 = (Range)wsh.Cells[1, 1];
+                    Range c2 = (Range)wsh.Cells[repairedArr.GetLength(0), 2];
+                    range = wsh.get_Range(c1, c2);
+                    range.Value2 = repairedArr;
+                    R = repairedArr.GetLength(0);
+                    MessageBox.Show("Было удалено " + copies + " дублированных значений");
+                }
+            }
+            
+
+            
+            if (R < 3){
                 MessageBox.Show("Данных в это категории недостаточно, чтобы построить нормативы");
                 return;
             }
-            string[,] list = new string[lastCell.Row, 2]; // массив значений с листа равен по размеру листу
-            for (int i = 0; i < lastCell.Row; i++) //по всем колонкам
+            string[,] list = new string[R, 2]; // массив значений с листа равен по размеру листу
+            for (int i = 0; i < R; i++) //по всем колонкам
                 for (int j = 0; j < 2; j++) // по всем строкам кроме последней
                     list[i, j] = wsh.Cells[i+ 1, j + 1].Text.ToString();//считываем текст в строку
 
@@ -113,7 +139,7 @@ namespace Гаврюшин_школота
             //row.Cells[1].Value = list.GetLength(0);
             //row.Cells[2].Value = sumH/Nx;
             //dataGridView1.Rows.Add(row);
-
+            
             wb.Close(false, Type.Missing, Type.Missing);
             excApp.Quit();
             GC.Collect();
@@ -124,7 +150,7 @@ namespace Гаврюшин_школота
         {
             //string s = @"C:\Users\Илья\Documents\Visual Studio 2015\Projects\smth_creator\smth_creator\bin\Debug\";
             //Process.Start(s + "smth_creator.exe");
-            if (regionSelect.SelectedItem == null)
+            if (regionSelect.SelectedIndex == -1 || regionSelect.SelectedItem == null)
             {
                 MessageBox.Show("Чтобы сохранить значения, их следует сначала построить",
                     "Внимание",
@@ -317,23 +343,21 @@ namespace Гаврюшин_школота
         }
         public void normsSaver(string name)
         {
-            if (dataGridView1.RowCount<2)
-            {
-                MessageBox.Show("Внимание",
-                    "Чтобы сохранить значения, их следует сначала построить",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
-                return;
-            }
+            //if (dataGridView1.RowCount<2)
+            //{
+            //    MessageBox.Show("Внимание",
+            //        "Чтобы сохранить значения, их следует сначала построить",
+            //        MessageBoxButtons.OK,
+            //        MessageBoxIcon.Exclamation);
+            //    return;
+            //}
             Microsoft.Office.Interop.Excel.Application ExcelApp =
-                new Microsoft.Office.Interop.Excel.Application(); //открыть эксель
+                new Microsoft.Office.Interop.Excel.Application();
             ExcelApp.Visible = true;
 
             name = name.Remove(name.Length - 4);
             string exeDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\нормативы";
-            //exeDir += @"\нормативы" + name + "_norm.xls";
             name = exeDir + name + "_norm.xls";
-            //name = System.IO.Path.Combine(exeDir, name);
 
             if (System.IO.File.Exists(name) == false)
                 System.IO.File.Copy(exeDir + @"\z_norm_example.xls", name);
@@ -346,7 +370,7 @@ namespace Гаврюшин_школота
 
             Worksheet ObjWorkSheet;
             int page = comboBox2.SelectedIndex + 1;
-            if (comboBox1.SelectedItem.ToString() == "мужской") page += 20;
+            if (comboBox1.SelectedIndex == 0) page += 20;
             ObjWorkSheet = (Worksheet)ObjWorkBook.Sheets[page];
             ObjWorkSheet.Columns.ColumnWidth = 7;
             ObjWorkSheet.Columns[1].ColumnWidth = 14;
@@ -386,12 +410,34 @@ namespace Гаврюшин_школота
                 }
             }
 
-            ObjWorkBook.Save();
-            ExcelApp.Visible = true;
-            ObjWorkBook.Save();
-            //ObjWorkBook.Close(true, Type.Missing, Type.Missing);
-            //ExcelApp.Quit();
-            //GC.Collect();
+            //ObjWorkBook.Save();
+            ObjWorkBook.Close(true, Type.Missing, Type.Missing);
+            ExcelApp.Quit();            
+            GC.Collect();
+        }
+
+        public double[,] duplicatesInExcelBase(double[,] primal)
+        {
+            var array = new int[primal.GetLength(0), 2];
+            for (int j = 0; j < primal.GetLength(0); j++)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    array[j, i] = Convert.ToInt16(primal[j, i] * 100);
+                }
+            }
+
+            array = array.ToEnumerableOfEnumerable()
+                     .Distinct(new ListEqualityComparer<int>())
+                     .ToList()
+                     .ToTwoDimensionalArray();
+
+            double[,] final = new double[array.GetLength(0), 2];
+            for (int j = 0; j < array.GetLength(0); j++)
+                for (int i = 0; i < 2; i++)
+                    final[j, i] = Convert.ToDouble(array[j, i] / 100.0);
+
+            return final;
         }
     }
 }

@@ -15,6 +15,10 @@ namespace Гаврюшин_школота
         public greeting()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.Manual;
+            var w = Screen.PrimaryScreen.Bounds.Width;
+            var h = Screen.PrimaryScreen.Bounds.Height;
+            this.Location = new System.Drawing.Point((w - this.Width) / 2, (h - this.Height) / 2);
         }
     }
 }

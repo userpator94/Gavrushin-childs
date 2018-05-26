@@ -34,13 +34,7 @@ namespace Гаврюшин_школота
 
         public void greetingForm()
         {
-            //Form greet = new greeting();
             greet.StartPosition = FormStartPosition.Manual;
-            //greet.StartPosition = FormStartPosition.CenterParent;
-            //greet.Location = this.Location;
-            //var w = Screen.PrimaryScreen.Bounds.Width;
-            //var h = Screen.PrimaryScreen.Bounds.Height;
-            //greet.Location = new System.Drawing.Point((w - greet.Width) / 2, (h - greet.Height) / 2);
             greet.Show();
             //_pause(5000);
             var t = Task.Run(async delegate { await Task.Delay(TimeSpan.FromSeconds(3)); return 42; });
@@ -65,7 +59,7 @@ namespace Гаврюшин_школота
             else if (helloKey != null)
             {
                 //string Gdate = helloKey.GetValue("was_create").ToString();
-                string Gdate = "20.05.2018";
+                string Gdate = "15.06.2018";
                 DateTime.TryParse(Gdate, out date2);
                 TimeSpan ts = date1 - date2;
                 helloKey.Close();
@@ -248,13 +242,12 @@ namespace Гаврюшин_школота
                 r.Value2 = outputExc;
 
                 //проверка на дубликаты
-                //System.Array values;
-                //Range xlRange = ObjWorkSheet.UsedRange;
+                //r = ObjWorkSheet.UsedRange;
+                //var primaArr = (object[,])r.Value;
                 //values = (System.Array)xlRange.Cells.Value;
                 //duplicatesElimination(values, outputExc);
                 //MessageBox.Show(Compare(values, outputExc) + "");
             }
-            
 
             ObjWorkBook.Close(true, Type.Missing, Type.Missing); //закрыть с сохранением
             ObjWorkExcel.Quit(); // выйти из экселя
@@ -458,7 +451,7 @@ namespace Гаврюшин_школота
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox2.Checked) checkBox1.Checked = false;
-        }
+        }        
 
     }
 

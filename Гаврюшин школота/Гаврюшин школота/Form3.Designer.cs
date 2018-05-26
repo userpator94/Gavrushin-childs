@@ -67,6 +67,8 @@
             // 
             this.f3dataGridView1.AllowUserToAddRows = false;
             this.f3dataGridView1.AllowUserToDeleteRows = false;
+            this.f3dataGridView1.AllowUserToResizeColumns = false;
+            this.f3dataGridView1.AllowUserToResizeRows = false;
             this.f3dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.f3dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column11,
@@ -83,14 +85,14 @@
             this.Column10});
             this.f3dataGridView1.Location = new System.Drawing.Point(12, 88);
             this.f3dataGridView1.Name = "f3dataGridView1";
-            this.f3dataGridView1.Size = new System.Drawing.Size(534, 67);
+            this.f3dataGridView1.Size = new System.Drawing.Size(563, 70);
             this.f3dataGridView1.TabIndex = 6;
             // 
             // Column11
             // 
             this.Column11.HeaderText = "Параметр";
             this.Column11.Name = "Column11";
-            this.Column11.Width = 64;
+            this.Column11.Width = 90;
             // 
             // Column1
             // 
@@ -201,6 +203,7 @@
             // 
             // comboBox2
             // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
             "3",
@@ -229,6 +232,7 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "мужской",
@@ -329,7 +333,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(561, 583);
+            this.ClientSize = new System.Drawing.Size(587, 583);
             this.Controls.Add(this.dgvOUT);
             this.Controls.Add(this.normsSaver);
             this.Controls.Add(this.normMaker);
@@ -352,18 +356,6 @@
         #endregion
 
         private System.Windows.Forms.DataGridView f3dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox regionSelect;
         private System.Windows.Forms.Label label2;
@@ -379,5 +371,17 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
     }
 }
